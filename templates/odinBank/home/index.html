@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OdinBank</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="logo"></div>
+        
+        <hr>
+
+        <div class="container_children">
+            <h1>Bem-vindo ao OdinBank</h1>
+            <p class="subTxt">Seu banco digital de confiança!</p>
+            <a href="{% url 'users:login' %}" class="butLogin">Fazer Login</a>
+            <div class="areaCadastro">
+                <p>Ainda não possui conta? </p>
+                <a href="{% url 'users:cadastro' %}" class="">Cadastre-se</a>
+            </div>
+        </div>
+    
+    </div>
+</body>
+</html>

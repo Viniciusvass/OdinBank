@@ -1,0 +1,99 @@
+/*
+    background: linear-gradient(135deg, #1B263B, #415A77);
+    background-color: rgba(27, 38, 59, 0.85);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    color: #D6D6D6;
+    color: #e9b406;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+*/
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #1B263B, #415A77);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.container{
+    display: flex;
+    background-color: rgba(27, 38, 59, 0.85);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.logo{
+    width: 150px;
+    height: 150px;
+    background-color: aliceblue;
+}
+
+hr{
+    border: none;
+    border-left: 1px solid #E0E0E0;
+    height: 250px;
+    margin-left: 20px; 
+    margin-bottom: 0;
+}
+
+.container_children{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+
+}
+
+.container_children h1{
+    color: aliceblue;
+    margin-top: -10px;
+    margin-bottom: 0px;
+}
+
+.subTxt{
+    color: #D6D6D6;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.butLogin{
+    background-color: #D6D6D6;
+    color: #1B263B;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.areaCadastro{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+    font-size: 15px;
+}
+
+.areaCadastro p{
+    color: #D6D6D6;
+}
+
+.areaCadastro a{
+    color: #A9CCE3;
+}
+
+.butLogin:hover{
+    background-color: #b9b8b8;
+}

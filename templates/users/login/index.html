@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'login/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="area_title">
+            <h1>Login</h1>
+        </div>
+        <hr>
+        <div>
+            <form class="area_form" method="POST" action="">
+                {% csrf_token %}
+                
+                <div class="input_group">
+                    <label class="label_email" for="email">E-mail:</label>
+                    <input class="input_email" placeholder="Digite o seu e-mail" type="email" id="email" name="email" required><br><br>
+                </div>
+
+    
+                <div class="input_group">
+                    <label class="label_password" for="password">Senha:</label>
+                    <input class="input_password" placeholder="Digite sua senha" type="password" id="password" name="password" required><br><br>
+                </div>
+                
+                <button class="button_submit" type="submit">Entrar</button>
+            </form>
+            <p>Não possui conta? <a href="{% url 'users:cadastro' %}">Cadastre-se</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

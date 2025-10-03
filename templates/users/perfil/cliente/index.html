@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Cliente - OdinBank</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'perfil/cliente/style.css' %}">
+</head>
+<body>
+    <!-- Botão para abrir/fechar drawer -->
+    <button id="drawer-toggle" class="drawer-toggle">☰</button>
+
+    <div class="dashboard-container">
+        <!-- Drawer Sidebar -->
+        <aside class="sidebar" id="drawer">
+            <h2>OdinBank</h2>
+            <p>Bem-vindo, {{ user.username }}</p>
+            <nav>
+                <ul>
+                    <li>Dashboard</li>
+                    <li>Transferência</li>
+                    <li>Extrato</li>
+                    <li>Perfil</li>
+                    <li>Sair</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Resumo da Conta -->
+            <section class="account-overview">
+                <h2>Resumo da Conta</h2>
+                <div class="card">
+                    <p><strong>Saldo Disponível:</strong> R$ {{ user.saldo }}</p>
+                    <p><strong>Número da Conta:</strong> {{ user.numero_da_conta }}</p>
+                    <p><strong>Tipo de Conta:</strong> {{ user.tipo_de_conta|capfirst }}</p>
+                    <p><strong>Status da Conta:</strong> {{ user.status_conta|capfirst }}</p>
+                </div>
+            </section>
+
+            <!-- Dados Pessoais -->
+            <section class="personal-info">
+                <h2>Dados Pessoais</h2>
+                <div class="card">
+                    <p><strong>CPF:</strong> {{ user.cpf }}</p>
+                    <p><strong>E-mail:</strong> {{ user.email }}</p>
+                    <p><strong>Telefone:</strong> {{ user.telefone }}</p>
+                    <p><strong>Data de Nascimento:</strong> {{ user.data_de_nascimento }}</p>
+                    <p><strong>Data de Cadastro:</strong> {{ user.data_de_cadastro }}</p>
+                    <p><strong>Administrador:</strong> {{ user.admUser }}</p>
+                </div>
+            </section>
+
+            <!-- Ações Rápidas -->
+            <section class="quick-actions">
+                <h2>Ações Rápidas</h2>
+                <div class="card actions-grid">
+                    <p>Nova Transferência</p>
+                    <p>Ver Extrato</p>
+                    <p>Editar Perfil</p>
+                    <p>Pagamentos</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- JS para abrir/fechar drawer -->
+    <script>
+        const drawer = document.getElementById('drawer');
+        const toggleBtn = document.getElementById('drawer-toggle');
+
+        toggleBtn.addEventListener('click', () => {
+            drawer.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
