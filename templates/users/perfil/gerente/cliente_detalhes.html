@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Cliente</title>
+    <style>
+        input[disabled], select[disabled] {
+            background-color: #f0f0f0;
+            color: #555;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dados do Cliente</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <p>
+            <label><strong>Nome:</strong></label><br>
+            <input type="text" name="username" value="{{ cliente.username }}" disabled>
+        </p>
+
+        <p>
+            <label><strong>CPF:</strong></label><br>
+            <input type="text" name="cpf" value="{{ cliente.cpf }}" disabled>
+        </p>
+
+        <p>
+            <label><strong>Email:</strong></label><br>
+            <input type="email" name="email" value="{{ cliente.email }}" disabled>
+        </p>
+
+        <p>
+            <label><strong>Telefone:</strong></label><br>
+            <input type="text" name="telefone" value="{{ cliente.telefone }}" disabled>
+        </p>
+
+        <p>
+            <label><strong>Tipo de Conta:</strong></label><br>
+            <select name="tipo_de_conta" disabled>
+                <option value="corrente" {% if cliente.tipo_de_conta == "corrente" %}selected{% endif %}>Corrente</option>
+                <option value="poupanca" {% if cliente.tipo_de_conta == "poupanca" %}selected{% endif %}>Poupança</option>
+                <option value="salario" {% if cliente.tipo_de_conta == "salario" %}selected{% endif %}>Salário</option>
+            </select>
+        </p>
+
+        <p>
+            <label><strong>Status da Conta:</strong></label><br>
+            <select name="status_conta" disabled>
+                <option value="ativa" {% if cliente.status_conta == "ativa" %}selected{% endif %}>Ativa</option>
+                <option value="inativa" {% if cliente.status_conta == "inativa" %}selected{% endif %}>Inativa</option>
+                <option value="bloqueada" {% if cliente.status_conta == "bloqueada" %}selected{% endif %}>Bloqueada</option>
+            </select>
+        </p>
+
+        <p>
+            <label><strong>Saldo:</strong></label><br>
+            <input type="number" step="0.01" name="saldo" value="{{ cliente.saldo }}" disabled>
+        </p>
+
+        <div style="margin-top: 10px;">
+            <button type="button" id="editarBtn">✏️ Editar</button>
+            <button type="submit" id="salvarBtn" style="display:none;">💾 Salvar Alterações</button>
+        </div>
+    </form>
+
+    <br>
+    <a href="{% url 'users:perfil' %}">⬅ Voltar</a>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <script>
+        const editarBtn = document.getElementById('editarBtn');
+        const salvarBtn = document.getElementById('salvarBtn');
+        const campos = document.querySelectorAll('input, select');
+
+        editarBtn.addEventListener('click', () => {
+            campos.forEach(campo => campo.disabled = false);
+            editarBtn.style.display = 'none';
+            salvarBtn.style.display = 'inline';
+        });
+    </script>
+</body>
+</html>

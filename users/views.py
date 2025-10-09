@@ -93,8 +93,41 @@ def view_perfil(request):
     # Se for gerente (admUser=True)
     if admUser:
         user = Gerente.objects.get(id=user_id)
-        return render(request, "users/perfil/gerente/index.html", {"user": user})
+        clientes = user.clientes.all()  # acessa os clientes vinculados via related_name="clientes"
+        return render(
+            request,
+            "users/perfil/gerente/index.html",
+            {"user": user, "clientes": clientes}
+        )
 
     # Se for cliente (admUser=False)
     user = Cliente.objects.get(id=user_id)
     return render(request, "users/perfil/cliente/index.html", {"user": user})
+
+def view_cliente_detalhes(request, cliente_id):
+    if "user_id" not in request.session:
+        return redirect("users:login")
+
+    admUser = request.session.get("admUser", False)
+    if not admUser:
+        return redirect("users:perfil")
+
+    cliente = Cliente.objects.get(id=cliente_id)
+
+    # 🔹 Se o gerente enviou o formulário
+    if request.method == "POST":
+        cliente.username = request.POST.get("username")
+        cliente.cpf = request.POST.get("cpf")
+        cliente.email = request.POST.get("email")
+        cliente.telefone = request.POST.get("telefone")
+        cliente.tipo_de_conta = request.POST.get("tipo_de_conta")
+        cliente.status_conta = request.POST.get("status_conta")
+        cliente.saldo = request.POST.get("saldo")
+
+        cliente.save()
+
+        from django.contrib import messages
+        messages.success(request, "Dados do cliente atualizados com sucesso!")
+        return redirect("users:cliente_detalhes", cliente_id=cliente.id)
+
+    return render(request, "users/perfil/gerente/cliente_detalhes.html", {"cliente": cliente})

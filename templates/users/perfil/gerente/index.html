@@ -4,12 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela do Gerente</title>
+    <script>
+        function irParaCliente(select) {
+            const clienteId = select.value;
+            if (clienteId) {
+                window.location.href = `/users/cliente/${clienteId}/`;
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>Bem-vindo, {{ user.username }}</h1>
+    <h1>Bem-vindo, {{ user.nome }}</h1>
     <p>CPF: {{ user.cpf }}</p>
     <p>Email: {{ user.email }}</p>
     <p>Telefone: {{ user.telefone }}</p>
-    <p>Tipo de Conta: {{ user.tipo_de_conta }}</p>
+
+    <h2>Clientes vinculados</h2>
+
+    {% if clientes %}
+        <label for="clienteSelect">Selecione um cliente:</label>
+        <select id="clienteSelect" onchange="irParaCliente(this)">
+            <option value="">-- Escolha um cliente --</option>
+            {% for cliente in clientes %}
+                <option value="{{ cliente.id }}">{{ cliente.username }} — {{ cliente.cpf }}</option>
+            {% endfor %}
+        </select>
+    {% else %}
+        <p>Nenhum cliente vinculado ainda.</p>
+    {% endif %}
 </body>
 </html>
