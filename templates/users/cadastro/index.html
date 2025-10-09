@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuário</title>
+    <title>Cadastro de Cliente</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'cadastro/style.css' %}">
     <script>
@@ -45,7 +45,17 @@
             <h1>Cadastro de Cliente</h1>
         </div>
         <hr>
-        <form method="POST" action="" onsubmit="return validarSenha()">
+
+        <!-- Mensagens do Django -->
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'users:cadastro' %}" onsubmit="return validarSenha()">
             {% csrf_token %}
             
             <div class="input_group">
@@ -92,6 +102,7 @@
                 </select>
             </div>
             
+            <!-- Campo hidden para admUser -->
             <input type="hidden" name="admUser" value="false">
             
             <div class="areaBut">

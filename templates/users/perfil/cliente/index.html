@@ -8,11 +8,9 @@
     <link rel="stylesheet" href="{% static 'perfil/cliente/style.css' %}">
 </head>
 <body>
-    <!-- Botão para abrir/fechar drawer -->
     <button id="drawer-toggle" class="drawer-toggle">☰</button>
 
     <div class="dashboard-container">
-        <!-- Drawer Sidebar -->
         <aside class="sidebar" id="drawer">
             <h2>OdinBank</h2>
             <p>Bem-vindo, {{ user.username }}</p>
@@ -27,9 +25,7 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Resumo da Conta -->
             <section class="account-overview">
                 <h2>Resumo da Conta</h2>
                 <div class="card">
@@ -40,7 +36,6 @@
                 </div>
             </section>
 
-            <!-- Dados Pessoais -->
             <section class="personal-info">
                 <h2>Dados Pessoais</h2>
                 <div class="card">
@@ -66,7 +61,6 @@
         </main>
     </div>
 
-    <!-- JS para abrir/fechar drawer -->
     <script>
         const drawer = document.getElementById('drawer');
         const toggleBtn = document.getElementById('drawer-toggle');
