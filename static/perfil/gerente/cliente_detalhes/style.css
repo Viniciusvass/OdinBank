@@ -1,0 +1,127 @@
+/* Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body */
+body {
+    background: #1B263B;
+    color: #c6c6c6;
+    padding: 20px;
+}
+
+/* Título da página */
+h1 {
+    margin-bottom: 20px;
+    color: #FFD700;
+    font-size: 2em;
+    text-align: center;
+}
+
+/* Formulário */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #2A3E59;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #F0F0F0;
+}
+
+/* Inputs e selects */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1em;
+    background-color: #1F334B;
+    color: #c6c6c6;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+input:focus, select:focus {
+    outline: 2px solid #FFD700;
+    background-color: #2A4A6E;
+    color: #fff;
+}
+
+/* Inputs/Selects desabilitados */
+input[disabled], select[disabled] {
+    background-color: #3B4F6C;
+    color: #a0a0a0;
+}
+
+/* Botões */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Botão editar */
+#editarBtn {
+    background-color: #FFD700;
+    color: #1B263B;
+    margin-right: 10px;
+}
+
+#editarBtn:hover {
+    background-color: #FFC000;
+    transform: translateY(-2px);
+}
+
+/* Botão salvar */
+#salvarBtn {
+    background-color: #00C851;
+    color: #fff;
+}
+
+#salvarBtn:hover {
+    background-color: #007E33;
+    transform: translateY(-2px);
+}
+
+/* Link voltar */
+a {
+    display: inline-block;
+    margin-top: 5px;
+    color: #FFD700;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #FFC000;
+}
+
+/* Mensagens de feedback */
+ul {
+    margin-top: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #3B4F6C;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    color: #FFD700;
+}

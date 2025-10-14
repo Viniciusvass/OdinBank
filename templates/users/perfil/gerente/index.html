@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela do Gerente</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'perfil/gerente/index/style.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script>
         function irParaCliente(select) {
             const clienteId = select.value;
@@ -14,23 +17,157 @@
     </script>
 </head>
 <body>
-    <h1>Bem-vindo, {{ user.nome }}</h1>
-    <p>CPF: {{ user.cpf }}</p>
-    <p>Email: {{ user.email }}</p>
-    <p>Telefone: {{ user.telefone }}</p>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="perfil">
+                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="foto de perfil">
+            </div>
+            <ul class="sidebar-list">
+                <li>
+                    <i class="material-symbols-outlined">dashboard</i>
+                    <span class="sidebar-text">Dashboard</span>
+                </li>
+                <li>
+                    <i class="material-symbols-outlined">bar_chart</i>
+                    <span class="sidebar-text">Relatórios</span>
+                </li>
+                <li>
+                    <i class="material-symbols-outlined">message</i>
+                    <span class="sidebar-text">Mensagens</span>
+                </li>
+                <li>
+                    <i class="material-symbols-outlined">settings</i>
+                    <span class="sidebar-text">Configurações</span>
+                </li>
+                <li>
+                    <i class="material-symbols-outlined">logout</i>
+                    <span class="sidebar-text">Sair</span>
+                </li>
+            </ul>
+        </div>
 
-    <h2>Clientes vinculados</h2>
+        <!-- Conteúdo principal -->
+        <div class="main">
+            <!-- Header -->
+            <header class="main-header">
+                <h1>Bem-vindo, {{ user.nome }}</h1>
+                <p>CPF: {{ user.cpf }} | Email: {{ user.email }} | Telefone: {{ user.telefone }}</p>
+            </header>
 
-    {% if clientes %}
-        <label for="clienteSelect">Selecione um cliente:</label>
-        <select id="clienteSelect" onchange="irParaCliente(this)">
-            <option value="">-- Escolha um cliente --</option>
-            {% for cliente in clientes %}
-                <option value="{{ cliente.id }}">{{ cliente.username }} — {{ cliente.cpf }}</option>
-            {% endfor %}
-        </select>
-    {% else %}
-        <p>Nenhum cliente vinculado ainda.</p>
-    {% endif %}
+            <!-- Dashboard Cards -->
+            <section class="dashboard-cards">
+                <div class="card">
+                    <h3>Total de Clientes</h3>
+                    <p>{{ clientes|length }}</p>
+                </div>
+                <div class="card">
+                    <h3>Clientes Ativos</h3>
+                    <p>{{ clientes_ativos|length }}</p>
+                </div>
+                <div class="card">
+                    <h3>Clientes Inativos</h3>
+                    <p>{{ clientes_inativos|length }}</p>
+                </div>
+                <div class="card">
+                    <h3>Clientes Bloqueados</h3>
+                    <p>{{ clientes_bloqueados|length }}</p>
+                </div>
+            </section>
+
+            <!-- Tabela de Clientes Ativos -->
+            <section class="clientes-ativos">
+                <h2>Clientes Ativos</h2>
+                {% if clientes_ativos %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Saldo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cliente in clientes_ativos %}
+                                <tr>
+                                    <td>{{ cliente.username }}</td>
+                                    <td>{{ cliente.cpf }}</td>
+                                    <td>R$ {{ cliente.saldo }}</td>
+                                    <td>
+                                        <button onclick="window.location.href='/users/cliente/{{ cliente.id }}/'">Ver Cliente</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>Nenhum cliente ativo.</p>
+                {% endif %}
+            </section>
+
+            <!-- Tabela de Clientes Inativos -->
+            <section class="clientes-ativos">
+                <h2>Clientes Inativos</h2>
+                {% if clientes_inativos %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Saldo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cliente in clientes_inativos %}
+                                <tr>
+                                    <td>{{ cliente.username }}</td>
+                                    <td>{{ cliente.cpf }}</td>
+                                    <td>R$ {{ cliente.saldo }}</td>
+                                    <td>
+                                        <button onclick="window.location.href='/users/cliente/{{ cliente.id }}/'">Ver Cliente</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>Nenhum cliente inativo.</p>
+                {% endif %}
+            </section>
+
+            <!-- Tabela de Clientes Bloqueados -->
+            <section class="clientes-ativos">
+                <h2>Clientes Bloqueados</h2>
+                {% if clientes_bloqueados %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Saldo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cliente in clientes_bloqueados %}
+                                <tr>
+                                    <td>{{ cliente.username }}</td>
+                                    <td>{{ cliente.cpf }}</td>
+                                    <td>R$ {{ cliente.saldo }}</td>
+                                    <td>
+                                        <button onclick="window.location.href='/users/cliente/{{ cliente.id }}/'">Ver Cliente</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>Nenhum cliente bloqueado.</p>
+                {% endif %}
+            </section>
+        </div>
+    </div>
 </body>
 </html>

@@ -4,6 +4,7 @@ from datetime import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
+from django.db.models import Sum
 
 # Create your views here.
 def view_cadastro(request):
@@ -82,7 +83,6 @@ def view_login(request):
 
     return render(request, "users/login/index.html")
 
-
 def view_perfil(request):
     if "user_id" not in request.session:
         return redirect("users:login")
@@ -90,17 +90,32 @@ def view_perfil(request):
     user_id = request.session["user_id"]
     admUser = request.session.get("admUser", False)
 
-    # Se for gerente (admUser=True)
     if admUser:
         user = Gerente.objects.get(id=user_id)
-        clientes = user.clientes.all()  # acessa os clientes vinculados via related_name="clientes"
+        clientes = user.clientes.all()
+        
+        # Separar clientes por status
+        clientes_ativos = clientes.filter(status_conta='ativa')
+        clientes_inativos = clientes.filter(status_conta='inativa')
+        clientes_bloqueados = clientes.filter(status_conta='bloqueada')
+        
+        # Somatório de saldo apenas dos ativos
+        saldo_total = clientes_ativos.aggregate(total=Sum('saldo'))['total'] or 0
+
         return render(
             request,
             "users/perfil/gerente/index.html",
-            {"user": user, "clientes": clientes}
+            {
+                "user": user,
+                "clientes": clientes,
+                "clientes_ativos": clientes_ativos,
+                "clientes_inativos": clientes_inativos,
+                "clientes_bloqueados": clientes_bloqueados,
+                "saldo_total": saldo_total,
+            }
         )
 
-    # Se for cliente (admUser=False)
+    # Se for cliente
     user = Cliente.objects.get(id=user_id)
     return render(request, "users/perfil/cliente/index.html", {"user": user})
 

@@ -33,7 +33,11 @@ body{
 .logo{
     width: 150px;
     height: 150px;
-    background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #D6D6D6;
+    border-radius: 50%;
 }
 
 hr{

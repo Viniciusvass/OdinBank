@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'perfil/gerente/cliente_detalhes/style.css' %}">
     <title>Detalhes do Cliente</title>
     <style>
         input[disabled], select[disabled] {
@@ -13,7 +15,9 @@
     </style>
 </head>
 <body>
+    <a href="{% url 'users:perfil' %}">⬅ Voltar</a>
     <h1>Dados do Cliente</h1>
+
 
     <form method="POST">
         {% csrf_token %}
@@ -68,7 +72,6 @@
     </form>
 
     <br>
-    <a href="{% url 'users:perfil' %}">⬅ Voltar</a>
 
     {% if messages %}
     <ul>
