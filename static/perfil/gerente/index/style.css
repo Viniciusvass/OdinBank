@@ -203,3 +203,15 @@ body {
     background-color: #2A3E59;
     color: #c6c6c6;
 }
+
+.btn-solicitacoes {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.btn-solicitacoes:hover {
+    background-color: #0056b3;
+}

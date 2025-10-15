@@ -59,6 +59,21 @@
                 </div>
             </section>
         </main>
+        <h2>Minhas Solicitações de Crédito</h2>
+        <a href="{% url 'users:solicitar_credito' %}">+ Nova solicitação</a>
+
+        <ul>
+            {% for s in user.solicitacoes.all %}
+                <li>
+                    <strong>R$ {{ s.valor }}</strong> - {{ s.status|title }}
+                    {% if s.resposta_gerente %}
+                        <br><em>Mensagem do gerente:</em> {{ s.resposta_gerente }}
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>Nenhuma solicitação feita ainda.</li>
+            {% endfor %}
+        </ul>
     </div>
 
     <script>

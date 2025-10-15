@@ -5,6 +5,9 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.db.models import Sum
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import SolicitacaoCredito
+from .forms import SolicitacaoCreditoForm
 
 # Create your views here.
 def view_cadastro(request):
@@ -146,3 +149,52 @@ def view_cliente_detalhes(request, cliente_id):
         return redirect("users:cliente_detalhes", cliente_id=cliente.id)
 
     return render(request, "users/perfil/gerente/cliente_detalhes.html", {"cliente": cliente})
+
+def solicitar_credito(request):
+    cliente_id = request.session.get("user_id")
+    cliente = get_object_or_404(Cliente, id=cliente_id)
+
+    if request.method == "POST":
+        form = SolicitacaoCreditoForm(request.POST)
+        if form.is_valid():
+            solicitacao = form.save(commit=False)
+            solicitacao.cliente = cliente
+            solicitacao.gerente = cliente.gerente_responsavel
+            solicitacao.save()
+            return redirect('users:perfil')  # ajuste para sua rota
+    else:
+        form = SolicitacaoCreditoForm()
+
+    return render(request, 'users/perfil/cliente/solicitar_credito.html', {'form': form})
+
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import SolicitacaoCredito, Gerente
+
+def lista_solicitacoes_gerente(request):
+    gerente_id = request.session.get("user_id")
+    gerente = get_object_or_404(Gerente, id=gerente_id)
+    solicitacoes = SolicitacaoCredito.objects.filter(gerente=gerente).order_by('-data_solicitacao')
+
+    return render(request, 'users/perfil/gerente/solicitacoes.html', {'gerente': gerente, 'solicitacoes': solicitacoes})
+
+
+def responder_solicitacao(request, solicitacao_id):
+    solicitacao = get_object_or_404(SolicitacaoCredito, id=solicitacao_id)
+
+    if request.method == "POST":
+        acao = request.POST.get("acao")
+        resposta = request.POST.get("resposta")
+
+        if acao == "aprovar":
+            solicitacao.status = "aprovado"
+        elif acao == "negar":
+            solicitacao.status = "negado"
+
+        solicitacao.resposta_gerente = resposta
+        solicitacao.save()
+
+        messages.success(request, f"Solicitação {solicitacao.id} atualizada com sucesso!")
+        return redirect('users:lista_solicitacoes_gerente')
+
+    return render(request, 'users/perfil/gerente/responder_solicitacao.html', {'solicitacao': solicitacao})

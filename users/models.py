@@ -71,3 +71,31 @@ class Cliente(models.Model):
 
     def __str__(self):
         return f"{self.username}"
+    
+class SolicitacaoCredito(models.Model):
+    STATUS_CHOICES = [
+        ('pendente', 'Pendente'),
+        ('aprovado', 'Aprovado'),
+        ('negado', 'Negado'),
+    ]
+
+    cliente = models.ForeignKey(
+        Cliente,
+        on_delete=models.CASCADE,
+        related_name='solicitacoes'
+    )
+    gerente = models.ForeignKey(
+        Gerente,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='solicitacoes_recebidas'
+    )
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    motivo = models.TextField()
+    data_solicitacao = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
+    resposta_gerente = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Solicitação de {self.cliente.username} - R$ {self.valor} ({self.status})"

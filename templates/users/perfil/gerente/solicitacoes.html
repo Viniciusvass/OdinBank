@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitações de Crédito</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'perfil/gerente/style.css' %}">
+</head>
+<body>
+    <h1>Solicitações de Crédito - {{ gerente.nome }}</h1>
+
+    {% if solicitacoes %}
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Valor</th>
+                    <th>Motivo</th>
+                    <th>Status</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in solicitacoes %}
+                <tr>
+                    <td>{{ s.cliente.username }}</td>
+                    <td>R$ {{ s.valor }}</td>
+                    <td>{{ s.motivo }}</td>
+                    <td>{{ s.status|title }}</td>
+                    <td>{{ s.data_solicitacao|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        {% if s.status == "pendente" %}
+                            <a href="{% url 'users:responder_solicitacao' s.id %}">Responder</a>
+                        {% else %}
+                            <em>Finalizada</em>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Não há solicitações de crédito no momento.</p>
+    {% endif %}
+</body>
+</html>

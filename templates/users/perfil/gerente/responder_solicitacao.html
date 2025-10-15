@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Responder Solicitação</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'perfil/gerente/cliente_detalhes/style.css' %}">
+</head>
+<body>
+    <h1>Responder Solicitação de Crédito</h1>
+
+    <p><strong>Cliente:</strong> {{ solicitacao.cliente.username }}</p>
+    <p><strong>Valor:</strong> R$ {{ solicitacao.valor }}</p>
+    <p><strong>Motivo:</strong> {{ solicitacao.motivo }}</p>
+    <p><strong>Status atual:</strong> {{ solicitacao.status|title }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="resposta">Mensagem ao cliente:</label><br>
+        <textarea name="resposta" rows="4" cols="40">{{ solicitacao.resposta_gerente }}</textarea><br><br>
+
+        <button type="submit" name="acao" value="aprovar">Aprovar</button>
+        <button type="submit" name="acao" value="negar">Negar</button>
+    </form>
+
+    <br>
+    <a href="{% url 'users:lista_solicitacoes_gerente' %}">← Voltar</a>
+</body>
+</html>
