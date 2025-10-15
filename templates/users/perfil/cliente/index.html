@@ -30,12 +30,12 @@
                 <h2>Resumo da Conta</h2>
                 <div class="card">
                     <p><strong>Saldo Disponível:</strong> R$ {{ user.saldo }}</p>
+                    <p><strong>Créditos Aprovados:</strong> R$ {{ user.creditos }}</p> <!-- NOVO -->
                     <p><strong>Número da Conta:</strong> {{ user.numero_da_conta }}</p>
                     <p><strong>Tipo de Conta:</strong> {{ user.tipo_de_conta|capfirst }}</p>
                     <p><strong>Status da Conta:</strong> {{ user.status_conta|capfirst }}</p>
                 </div>
             </section>
-
             <section class="personal-info">
                 <h2>Dados Pessoais</h2>
                 <div class="card">

@@ -68,6 +68,7 @@ class Cliente(models.Model):
     )
     status_conta = models.CharField(max_length=20, default='ativa')
     admUser = models.BooleanField(default=False)
+    creditos = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
         return f"{self.username}"
@@ -96,6 +97,19 @@ class SolicitacaoCredito(models.Model):
     data_solicitacao = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
     resposta_gerente = models.TextField(blank=True, null=True)
+    def save(self, *args, **kwargs):
+        if self.pk:
+            solicitacao_antiga = SolicitacaoCredito.objects.get(pk=self.pk)
+            status_antigo = solicitacao_antiga.status
+        else:
+            status_antigo = None
+
+        super().save(*args, **kwargs)
+
+        if self.status == 'aprovado' and status_antigo != 'aprovado':
+            cliente = self.cliente
+            cliente.creditos += self.valor  # 👈 soma nos créditos
+            cliente.save()
 
     def __str__(self):
         return f"Solicitação de {self.cliente.username} - R$ {self.valor} ({self.status})"
