@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Solicitações de Crédito</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'perfil/gerente/style.css' %}">
+    <link rel="stylesheet" href="{% static 'perfil/gerente/solicitacoes/style.css' %}">
 </head>
 <body>
     <h1>Solicitações de Crédito - {{ gerente.nome }}</h1>
@@ -28,7 +28,7 @@
                     <td>R$ {{ s.valor }}</td>
                     <td>{{ s.motivo }}</td>
                     <td>{{ s.status|title }}</td>
-                    <td>{{ s.data_solicitacao|date:"d/m/Y H:i" }}</td>
+                    <td>{{ s.data_solicitacao|date:"d/m/Y" }}</td>
                     <td>
                         {% if s.status == "pendente" %}
                             <a href="{% url 'users:responder_solicitacao' s.id %}">Responder</a>

@@ -18,43 +18,13 @@
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="perfil">
-                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="foto de perfil">
-            </div>
-            <ul class="sidebar-list">
-                <li>
-                    <i class="material-symbols-outlined">dashboard</i>
-                    <span class="sidebar-text">Dashboard</span>
-                </li>
-                <li>
-                    <i class="material-symbols-outlined">bar_chart</i>
-                    <span class="sidebar-text">Relatórios</span>
-                </li>
-                <li>
-                    <i class="material-symbols-outlined">request_quote</i>
-                    <a href="{% url 'users:lista_solicitacoes_gerente' %}" class="sidebar-text">Solicitações</a>
-                </li>
-                <li>
-                    <i class="material-symbols-outlined">settings</i>
-                    <span class="sidebar-text">Configurações</span>
-                </li>
-                <li>
-                    <i class="material-symbols-outlined">logout</i>
-                    <span class="sidebar-text">Sair</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Conteúdo principal -->
         <div class="main">
             <!-- Header -->
             <header class="main-header">
                 <h1>Bem-vindo, {{ user.nome }}</h1>
                 <p>CPF: {{ user.cpf }} | Email: {{ user.email }} | Telefone: {{ user.telefone }}</p>
             </header>
-
+            
             <!-- Dashboard Cards -->
             <section class="dashboard-cards">
                 <div class="card">
@@ -74,6 +44,19 @@
                     <p>{{ clientes_bloqueados|length }}</p>
                 </div>
             </section>
+
+            <!-- Botões de Funções -->
+            <section class="btn-funcs">
+                <h2>Ações Rápidas</h2>
+                <div class="btn-grid">
+                    <a href="{% url 'users:lista_solicitacoes_gerente' %}" class="btn-action">Solicitações</a>
+                    <a href="#" class="btn-action">Adicionar Cliente</a>
+                    <a href="#" class="btn-action">Gerar Relatório</a>
+                    <a href="#" class="btn-action">Configurações</a>
+                </div>
+            </section>
+
+
 
             <!-- Tabela de Clientes Ativos -->
             <section class="clientes-ativos">

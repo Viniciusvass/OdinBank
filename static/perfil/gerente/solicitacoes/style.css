@@ -1,0 +1,118 @@
+/* ======== Estilo base ======== */
+body {
+    background: linear-gradient(135deg, #1B263B, #415A77);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #c6c6c6;
+    margin: 0;
+    padding: 0;
+}
+
+/* ======== Container principal ======== */
+h1 {
+    text-align: center;
+    color: #FFD700;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+/* ======== Tabela ======== */
+table {
+    width: 90%;
+    margin: 0 auto 60px auto;
+    border-collapse: collapse;
+    background-color: #2A3E59;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Cabeçalho */
+thead {
+    background-color: #1F334B;
+}
+
+th {
+    color: #FFD700;
+    text-align: left;
+    padding: 14px 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Linhas */
+td {
+    color: #F0F0F0;
+    padding: 12px 16px;
+    border-top: 1px solid #3B4F6C;
+}
+
+tr:hover {
+    background-color: #334B6E;
+    transition: background-color 0.3s;
+}
+
+/* ======== Links e Botões ======== */
+a {
+    color: #1B263B;
+    background-color: #FFD700;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+a:hover {
+    background-color: #FFC000;
+    transform: translateY(-2px);
+}
+
+em {
+    color: #9ca4b8;
+    font-style: italic;
+}
+
+/* ======== Mensagem de ausência de solicitações ======== */
+p {
+    text-align: center;
+    color: #c6c6c6;
+    font-size: 1.1em;
+    margin-top: 80px;
+}
+
+/* ======== Animação de entrada ======== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ======== Responsividade ======== */
+@media (max-width: 768px) {
+    table {
+        width: 95%;
+        font-size: 0.9em;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    a {
+        padding: 5px 10px;
+        font-size: 0.9em;
+    }
+}

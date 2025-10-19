@@ -1,0 +1,141 @@
+/* ======== Estilo base ======== */
+body {
+    background: linear-gradient(135deg, #1B263B, #415A77);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #c6c6c6;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* ======== Cabeçalho ======== */
+h1 {
+    text-align: center;
+    color: #FFD700;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+/* ======== Container de informações ======== */
+div {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    background-color: #2A3E59;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+div p {
+    margin: 10px 0;
+    font-size: 1em;
+    color: #F0F0F0;
+}
+
+div strong {
+    color: #FFD700;
+}
+
+/* ======== Formulário ======== */
+form {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #2A3E59;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #FFD700;
+    font-weight: 600;
+}
+
+textarea {
+    width: 100%;
+    background-color: #1F334B;
+    color: #F0F0F0;
+    border: 1px solid #3B4F6C;
+    border-radius: 8px;
+    padding: 10px;
+    resize: vertical;
+    font-size: 1em;
+    min-height: 100px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+textarea:focus {
+    border-color: #FFD700;
+    outline: none;
+}
+
+/* ======== Botões ======== */
+button {
+    background-color: #FFD700;
+    border: none;
+    color: #1B263B;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #FFC000;
+    transform: translateY(-2px);
+}
+
+/* ======== Link de voltar ======== */
+a {
+    display: block;
+    text-align: center;
+    margin: 40px auto 20px auto;
+    color: #FFD700;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #FFC000;
+}
+
+/* ======== Animação ======== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ======== Responsividade ======== */
+@media (max-width: 600px) {
+    div, form {
+        width: 90%;
+        padding: 15px;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    textarea {
+        min-height: 80px;
+    }
+}

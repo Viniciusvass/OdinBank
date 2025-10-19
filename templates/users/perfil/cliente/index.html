@@ -4,38 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel do Cliente - OdinBank</title>
+
     {% load static %}
-    <link rel="stylesheet" href="{% static 'perfil/cliente/style.css' %}">
+    <link rel="stylesheet" href="{% static 'perfil/cliente/index/style.css' %}">
+
+    <!-- Ícones Google Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
+
 <body>
-    <button id="drawer-toggle" class="drawer-toggle">☰</button>
-
     <div class="dashboard-container">
-        <aside class="sidebar" id="drawer">
-            <h2>OdinBank</h2>
-            <p>Bem-vindo, {{ user.username }}</p>
-            <nav>
-                <ul>
-                    <li>Dashboard</li>
-                    <li>Transferência</li>
-                    <li>Extrato</li>
-                    <li>Perfil</li>
-                    <li>Sair</li>
-                </ul>
-            </nav>
-        </aside>
-
+        <!-- ===== CONTEÚDO PRINCIPAL ===== -->
         <main class="main-content">
+
+            <header class="main-header">
+                <h1>Bem-vindo(a), {{ user.username }}</h1>
+                <p>Gerencie suas informações e acompanhe suas movimentações.</p>
+            </header>
+
+            <!-- ===== RESUMO DA CONTA ===== -->
             <section class="account-overview">
                 <h2>Resumo da Conta</h2>
                 <div class="card">
                     <p><strong>Saldo Disponível:</strong> R$ {{ user.saldo }}</p>
-                    <p><strong>Créditos Aprovados:</strong> R$ {{ user.creditos }}</p> <!-- NOVO -->
+                    <p><strong>Créditos Aprovados:</strong> R$ {{ user.creditos }}</p>
                     <p><strong>Número da Conta:</strong> {{ user.numero_da_conta }}</p>
                     <p><strong>Tipo de Conta:</strong> {{ user.tipo_de_conta|capfirst }}</p>
                     <p><strong>Status da Conta:</strong> {{ user.status_conta|capfirst }}</p>
                 </div>
             </section>
+
+            <!-- ===== DADOS PESSOAIS ===== -->
             <section class="personal-info">
                 <h2>Dados Pessoais</h2>
                 <div class="card">
@@ -44,45 +43,40 @@
                     <p><strong>Telefone:</strong> {{ user.telefone }}</p>
                     <p><strong>Data de Nascimento:</strong> {{ user.data_de_nascimento }}</p>
                     <p><strong>Data de Cadastro:</strong> {{ user.data_de_cadastro }}</p>
-                    <p><strong>Administrador:</strong> {{ user.admUser }}</p>
                 </div>
             </section>
 
-            <!-- Ações Rápidas -->
+            <!-- ===== AÇÕES RÁPIDAS ===== -->
             <section class="quick-actions">
                 <h2>Ações Rápidas</h2>
                 <div class="card actions-grid">
-                    <p>Nova Transferência</p>
-                    <p>Ver Extrato</p>
-                    <p>Editar Perfil</p>
-                    <p>Pagamentos</p>
+                    <button class="action-btn">Nova Transferência</button>
+                    <button class="action-btn">Ver Extrato</button>
+                    <button class="action-btn">Editar Perfil</button>
+                    <button class="action-btn">Pagamentos</button>
                 </div>
             </section>
+
+            <!-- ===== SOLICITAÇÕES DE CRÉDITO ===== -->
+            <section class="credit-requests">
+                <h2>Minhas Solicitações de Crédito</h2>
+                <a href="{% url 'users:solicitar_credito' %}" class="btn-solicitacoes">+ Nova solicitação</a>
+
+                <ul class="credit-list">
+                    {% for s in user.solicitacoes.all %}
+                        <li>
+                            <strong>R$ {{ s.valor }}</strong> – {{ s.status|title }}
+                            {% if s.resposta_gerente %}
+                                <br><em>Mensagem do gerente:</em> {{ s.resposta_gerente }}
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li>Nenhuma solicitação feita ainda.</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
         </main>
-        <h2>Minhas Solicitações de Crédito</h2>
-        <a href="{% url 'users:solicitar_credito' %}">+ Nova solicitação</a>
-
-        <ul>
-            {% for s in user.solicitacoes.all %}
-                <li>
-                    <strong>R$ {{ s.valor }}</strong> - {{ s.status|title }}
-                    {% if s.resposta_gerente %}
-                        <br><em>Mensagem do gerente:</em> {{ s.resposta_gerente }}
-                    {% endif %}
-                </li>
-            {% empty %}
-                <li>Nenhuma solicitação feita ainda.</li>
-            {% endfor %}
-        </ul>
     </div>
-
-    <script>
-        const drawer = document.getElementById('drawer');
-        const toggleBtn = document.getElementById('drawer-toggle');
-
-        toggleBtn.addEventListener('click', () => {
-            drawer.classList.toggle('open');
-        });
-    </script>
 </body>
 </html>

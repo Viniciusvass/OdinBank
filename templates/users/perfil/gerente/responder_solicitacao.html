@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <title>Responder Solicitação</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'perfil/gerente/cliente_detalhes/style.css' %}">
+    <link rel="stylesheet" href="{% static 'perfil/gerente/responder_solicitacao/style.css' %}">
 </head>
 <body>
     <h1>Responder Solicitação de Crédito</h1>
 
-    <p><strong>Cliente:</strong> {{ solicitacao.cliente.username }}</p>
-    <p><strong>Valor:</strong> R$ {{ solicitacao.valor }}</p>
-    <p><strong>Motivo:</strong> {{ solicitacao.motivo }}</p>
-    <p><strong>Status atual:</strong> {{ solicitacao.status|title }}</p>
+    <div>
+        <p><strong>Cliente:</strong> {{ solicitacao.cliente.username }}</p>
+        <p><strong>Valor:</strong> R$ {{ solicitacao.valor }}</p>
+        <p><strong>Motivo:</strong> {{ solicitacao.motivo }}</p>
+        <p><strong>Status atual:</strong> {{ solicitacao.status|title }}</p>
+    </div>
 
     <form method="post">
         {% csrf_token %}

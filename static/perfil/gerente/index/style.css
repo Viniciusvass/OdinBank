@@ -10,86 +10,13 @@ body {
     padding: 0;
 }
 
-.sidebar {
-    position: fixed;
-    width: 65px;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-color: #415A77;
-    transition: width 0.5s ease;
-    z-index: 1000; /* fica acima do conteúdo */
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar:hover {
-    width: 200px;
-    
-}
-
-.perfil > img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: block;
-    margin: 20px auto;
-}
-
-.sidebar-list{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    color: #c6c6c6;
-}
-
-.sidebar-list li {
-    display: flex;
-    padding: 12px 20px;
-    cursor: pointer;
-    width: 100%;
-    box-sizing: border-box;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.sidebar-list li i {
-    font-size: 25px;
-    min-width: 30px; /* mantém ícones alinhados */
-}
-
-/* Esconde o texto inicialmente */
-.sidebar-text {
-    opacity: 0;
-    margin-left: 10px;
-    white-space: nowrap;
-    transition: opacity 0.3s ease;
-}
-
-/* Mostra o texto ao expandir a sidebar */
-.sidebar:hover .sidebar-text {
-    opacity: 1;
-}
-
-.sidebar-list :hover{
-    background-color: #c6c6c6;
-    color: #415A77;
-}
-
 /* Main */
 .main {
-    margin-left: 65px; /* considerando largura da sidebar fechada */
     padding: 20px;
     color: #c6c6c6;
     min-height: 100vh;
     background: linear-gradient(135deg, #1B263B, #415A77);
     transition: margin-left 0.5s ease;
-}
-
-/* Ajusta a margem quando a sidebar é expandida */
-.sidebar:hover ~ .main {
-    margin-left: 200px;
 }
 
 /* Header */
@@ -123,11 +50,6 @@ body {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     transition: transform 0.3s, background-color 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    background-color: #1F334B;
 }
 
 .card h3 {
@@ -204,14 +126,55 @@ body {
     color: #c6c6c6;
 }
 
-.btn-solicitacoes {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 16px;
+/* Botões de Funções */
+.btn-funcs {
+    margin: 30px 0;
+}
+
+.btn-funcs h2 {
+    color: #c6c6c6;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.btn-grid {
+    display: inline-flex; /* container ajusta largura conforme elementos */
+    flex-wrap: wrap;
+    gap: 15px;
+    background-color: #1F334B;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Botões dentro da grid */
+.btn-action {
+    background-color: #2A3E59;
+    color: #c6c6c6;
+    padding: 12px 20px;
     border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
 }
-.btn-solicitacoes:hover {
-    background-color: #0056b3;
+
+.btn-action:hover {
+    background-color: #FFD700;
+    color: #1B263B;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Responsividade */
+@media screen and (max-width: 900px) {
+    .btn-grid {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-action {
+        flex: 1 1 100%;
+    }
 }
