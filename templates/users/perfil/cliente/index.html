@@ -34,6 +34,17 @@
                 </div>
             </section>
 
+            <!-- ===== AÇÕES RÁPIDAS ===== -->
+            <section class="quick-actions">
+                <h2>Ações Rápidas</h2>
+                <div class="card actions-grid">
+                    <a href="{% url 'users:transferencia' %}" class="action-btn">Nova Transferência</a>
+                    <button class="action-btn">Ver Extrato</button>
+                    <button class="action-btn">Editar Perfil</button>
+                    <button class="action-btn">Pagamentos</button>
+                </div>
+            </section>
+
             <!-- ===== DADOS PESSOAIS ===== -->
             <section class="personal-info">
                 <h2>Dados Pessoais</h2>
@@ -43,17 +54,6 @@
                     <p><strong>Telefone:</strong> {{ user.telefone }}</p>
                     <p><strong>Data de Nascimento:</strong> {{ user.data_de_nascimento }}</p>
                     <p><strong>Data de Cadastro:</strong> {{ user.data_de_cadastro }}</p>
-                </div>
-            </section>
-
-            <!-- ===== AÇÕES RÁPIDAS ===== -->
-            <section class="quick-actions">
-                <h2>Ações Rápidas</h2>
-                <div class="card actions-grid">
-                    <button class="action-btn">Nova Transferência</button>
-                    <button class="action-btn">Ver Extrato</button>
-                    <button class="action-btn">Editar Perfil</button>
-                    <button class="action-btn">Pagamentos</button>
                 </div>
             </section>
 

@@ -113,3 +113,55 @@ class SolicitacaoCredito(models.Model):
 
     def __str__(self):
         return f"Solicitação de {self.cliente.username} - R$ {self.valor} ({self.status})"
+
+from django.db import models
+from django.utils import timezone
+from decimal import Decimal
+from django.core.exceptions import ValidationError
+
+class Transferencia(models.Model):
+    STATUS_CHOICES = [
+        ('concluida', 'Concluída'),
+        ('falhou', 'Falhou'),
+    ]
+
+    remetente = models.ForeignKey(
+        'Cliente',
+        on_delete=models.CASCADE,
+        related_name='transferencias_enviadas'
+    )
+    destinatario = models.ForeignKey(
+        'Cliente',
+        on_delete=models.CASCADE,
+        related_name='transferencias_recebidas'
+    )
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    data_transferencia = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='concluida')
+
+    def clean(self):
+        # Impedir transferência para si mesmo
+        if self.remetente == self.destinatario:
+            raise ValidationError("Você não pode transferir para si mesmo.")
+        # Valor mínimo
+        if self.valor <= 0:
+            raise ValidationError("O valor da transferência deve ser maior que zero.")
+        # Saldo suficiente
+        if self.remetente.saldo < self.valor:
+            raise ValidationError("Saldo insuficiente para realizar a transferência.")
+
+    def save(self, *args, **kwargs):
+        # Validação manual antes de salvar
+        self.full_clean()
+
+        # Atualiza saldos apenas se for uma nova transferência
+        if not self.pk:
+            self.remetente.saldo -= Decimal(self.valor)
+            self.remetente.save()
+            self.destinatario.saldo += Decimal(self.valor)
+            self.destinatario.save()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Transferência de {self.remetente.username} para {self.destinatario.username} - R$ {self.valor}"

@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from .models import Cliente, Gerente
+from .models import Cliente, Gerente, Transferencia
 from datetime import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
@@ -167,10 +167,6 @@ def solicitar_credito(request):
 
     return render(request, 'users/perfil/cliente/solicitar_credito.html', {'form': form})
 
-from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import SolicitacaoCredito, Gerente
-
 def lista_solicitacoes_gerente(request):
     gerente_id = request.session.get("user_id")
     gerente = get_object_or_404(Gerente, id=gerente_id)
@@ -198,3 +194,63 @@ def responder_solicitacao(request, solicitacao_id):
         return redirect('users:lista_solicitacoes_gerente')
 
     return render(request, 'users/perfil/gerente/responder_solicitacao.html', {'solicitacao': solicitacao})
+
+from decimal import Decimal
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.exceptions import ValidationError
+from .models import Cliente, Transferencia
+
+
+def transferencia(request):
+    # Garante que o usuário está logado e é um cliente
+    if "user_id" not in request.session:
+        return redirect("users:login")
+
+    admUser = request.session.get("admUser", False)
+    if admUser:
+        messages.error(request, "Apenas clientes podem realizar transferências.")
+        return redirect("users:perfil")
+
+    remetente = get_object_or_404(Cliente, id=request.session["user_id"])
+
+    if request.method == "POST":
+        cpf_destinatario = request.POST.get("cpf", "").strip()
+        valor = request.POST.get("valor", "").strip()
+
+        if not cpf_destinatario or not valor:
+            messages.error(request, "Preencha todos os campos.")
+            return redirect("users:transferencia")
+
+        try:
+            valor = Decimal(valor)
+        except:
+            messages.error(request, "Valor inválido.")
+            return redirect("users:transferencia")
+
+        try:
+            destinatario = Cliente.objects.get(cpf=cpf_destinatario)
+        except Cliente.DoesNotExist:
+            messages.error(request, "CPF do destinatário não encontrado.")
+            return redirect("users:transferencia")
+
+        # Cria a transferência
+        transferencia = Transferencia(
+            remetente=remetente,
+            destinatario=destinatario,
+            valor=valor
+        )
+
+        try:
+            transferencia.save()
+            messages.success(
+                request,
+                f"Transferência de R$ {valor:.2f} para {destinatario.username} realizada com sucesso!"
+            )
+            return redirect("users:perfil")
+        except ValidationError as e:
+            messages.error(request, e.message)
+        except Exception as e:
+            messages.error(request, f"Erro ao processar transferência: {e}")
+
+    return render(request, "users/perfil/cliente/transferencia.html", {"user": remetente})

@@ -1,0 +1,135 @@
+/* ===============================
+   Transferência Bancária - OdinBank
+   Tema: Dark Azul + Dourado
+   =============================== */
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* CORES */
+:root {
+    --primary-color: #FFD700; /* Dourado */
+    --secondary-color: #415A77; /* Azul escuro */
+    --background-gradient: linear-gradient(135deg, #1B263B, #415A77);
+    --card-bg: #2A3E59;
+    --card-hover-bg: #1F334B;
+    --text-color: #c6c6c6;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+}
+
+/* BODY */
+body {
+    background: var(--background-gradient);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* FORM CONTAINER */
+form {
+    background-color: var(--card-bg);
+    padding: 40px 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+/* TÍTULO */
+h2 {
+    text-align: center;
+    color: #F0F0F0;
+    margin-bottom: 25px;
+}
+
+/* LABELS E INPUTS */
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background-color: #344E73;
+    color: #fff;
+    font-size: 1em;
+    outline: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    background-color: #3B5A88;
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
+/* BOTÃO */
+button {
+    width: 100%;
+    margin-top: 25px;
+    background-color: var(--primary-color);
+    color: #1B263B;
+    font-weight: bold;
+    border: none;
+    padding: 12px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background-color: #FFC000;
+    transform: translateY(-2px);
+}
+
+/* MENSAGENS (SUCESSO/ERRO) */
+.messages {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.messages p {
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    font-size: 0.95em;
+}
+
+.messages p.success {
+    background-color: var(--success-color);
+    color: #fff;
+}
+
+.messages p.error {
+    background-color: var(--error-color);
+    color: #fff;
+}
+
+/* RESPONSIVO */
+@media (max-width: 600px) {
+    form {
+        padding: 25px 30px;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    input, button {
+        font-size: 0.95em;
+    }
+}

@@ -96,6 +96,7 @@ h2 {
     border-radius: 8px;
     font-weight: 500;
     cursor: pointer;
+    text-decoration: none;
     transition: background 0.3s, transform 0.3s;
 }
 
