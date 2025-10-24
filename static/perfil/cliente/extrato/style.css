@@ -1,0 +1,120 @@
+/* ===============================
+   Extrato - OdinBank
+   Tema: Dark Azul + Dourado
+   =============================== */
+
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* VARIÁVEIS DE CORES */
+:root {
+    --primary-color: #FFD700; /* Dourado */
+    --secondary-color: #415A77; /* Azul escuro */
+    --background-dark: #1B263B;
+    --card-bg: #2A3E59;
+    --card-hover-bg: #1F334B;
+    --text-color: #c6c6c6;
+    --positive-color: #3CCF4E;
+    --negative-color: #FF4E4E;
+}
+
+/* BODY */
+body {
+    background: linear-gradient(135deg, var(--background-dark), var(--secondary-color));
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: 30px;
+}
+
+/* CONTAINER PRINCIPAL */
+.dashboard-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+.main-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.main-header h1 {
+    font-size: 2em;
+    color: #f0f0f0;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* SEÇÃO DE EXTRATO */
+.extrato-section {
+    background-color: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* LISTA DE TRANSFERÊNCIAS */
+.extrato-list {
+    list-style: none;
+}
+
+.extrato-list li {
+    background-color: var(--card-hover-bg);
+    padding: 15px 18px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.extrato-list strong {
+    color: var(--primary-color);
+}
+
+.valor-positivo {
+    color: var(--positive-color);
+    font-weight: bold;
+}
+
+.valor-negativo {
+    color: var(--negative-color);
+    font-weight: bold;
+}
+
+/* STATUS */
+.extrato-list li em,
+.extrato-list li span.status {
+    font-style: italic;
+    color: #a9a9a9;
+}
+
+/* MENSAGEM DE VAZIO */
+.extrato-list li:last-child:only-child {
+    text-align: center;
+    color: #bbb;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+    body {
+        padding: 20px;
+    }
+
+    .main-header h1 {
+        font-size: 1.6em;
+    }
+
+    .extrato-section {
+        padding: 18px;
+    }
+
+    .extrato-list li {
+        font-size: 0.95em;
+    }
+}

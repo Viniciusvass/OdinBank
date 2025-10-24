@@ -261,3 +261,37 @@ def transferencia(request):
 
     # Renderiza a página (tanto GET quanto erros no POST)
     return render(request, "users/perfil/cliente/transferencia.html", {"user": remetente})
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import Cliente, Transferencia
+
+def extrato(request):
+    # Garante que o usuário está logado e é um cliente
+    if "user_id" not in request.session:
+        return redirect("users:login")
+
+    admUser = request.session.get("admUser", False)
+    if admUser:
+        messages.error(request, "Apenas clientes podem acessar o extrato.")
+        return redirect("users:perfil")
+
+    # Pega o cliente logado
+    cliente = get_object_or_404(Cliente, id=request.session["user_id"])
+
+    # Busca transferências enviadas e recebidas
+    transferencias_enviadas = cliente.transferencias_enviadas.all()
+    transferencias_recebidas = cliente.transferencias_recebidas.all()
+
+    # Combina e ordena por data
+    todas_transferencias = sorted(
+        list(transferencias_enviadas) + list(transferencias_recebidas),
+        key=lambda t: t.data_transferencia,
+        reverse=True
+    )
+
+    context = {
+        "user": cliente,
+        "transferencias": todas_transferencias,
+    }
+    return render(request, 'users/perfil/cliente/extrato.html', context)

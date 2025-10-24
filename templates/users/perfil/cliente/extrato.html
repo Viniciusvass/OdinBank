@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extrato - OdinBank</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'perfil/cliente/extrato/style.css' %}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <main class="main-content">
+            <header class="main-header">
+                <h1>Extrato de Transações</h1>
+            </header>
+
+            <section class="extrato-section">
+                <ul class="extrato-list">
+                    {% for t in transferencias %}
+                        <li>
+                            <strong>{{ t.data_transferencia|date:"d/m/Y H:i" }}</strong> - 
+                            {% if t.remetente == user %}
+                                Transferência enviada para {{ t.destinatario.username }}: 
+                                <span class="valor-negativo">- R$ {{ t.valor }}</span>
+                            {% else %}
+                                Transferência recebida de {{ t.remetente.username }}: 
+                                <span class="valor-positivo">+ R$ {{ t.valor }}</span>
+                            {% endif %}
+                            (Status: {{ t.status|capfirst }})
+                        </li>
+                    {% empty %}
+                        <li>Nenhuma transação encontrada.</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

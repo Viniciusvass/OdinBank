@@ -12,6 +12,6 @@ urlpatterns = [
     path('solicitacoes/', views.lista_solicitacoes_gerente, name='lista_solicitacoes_gerente'),
     path('solicitacoes/<int:solicitacao_id>/', views.responder_solicitacao, name='responder_solicitacao'),
     path("transferencia/", views.transferencia, name="transferencia"),
-
+    path('extrato/', views.extrato, name='extrato'),
 
 ]

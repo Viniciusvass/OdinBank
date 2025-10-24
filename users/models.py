@@ -2,7 +2,9 @@ import random
 from django.db import models
 from django.core.validators import RegexValidator
 from django.apps import apps
-
+from django.utils import timezone
+from decimal import Decimal
+from django.core.exceptions import ValidationError
         
 def gerar_numero_conta():
     Cliente = apps.get_model('users', 'Cliente')
@@ -114,11 +116,6 @@ class SolicitacaoCredito(models.Model):
     def __str__(self):
         return f"Solicitação de {self.cliente.username} - R$ {self.valor} ({self.status})"
 
-from django.db import models
-from django.utils import timezone
-from decimal import Decimal
-from django.core.exceptions import ValidationError
-
 class Transferencia(models.Model):
     STATUS_CHOICES = [
         ('concluida', 'Concluída'),
@@ -165,6 +162,3 @@ class Transferencia(models.Model):
 
     def __str__(self):
         return f"Transferência de {self.remetente.username} para {self.destinatario.username} - R$ {self.valor}"
-
-
-#cartão
