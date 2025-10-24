@@ -165,3 +165,6 @@ class Transferencia(models.Model):
 
     def __str__(self):
         return f"Transferência de {self.remetente.username} para {self.destinatario.username} - R$ {self.valor}"
+
+
+#cartão

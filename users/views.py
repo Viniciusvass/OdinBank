@@ -201,7 +201,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ValidationError
 from .models import Cliente, Transferencia
 
-
 def transferencia(request):
     # Garante que o usuário está logado e é um cliente
     if "user_id" not in request.session:
@@ -218,16 +217,19 @@ def transferencia(request):
         cpf_destinatario = request.POST.get("cpf", "").strip()
         valor = request.POST.get("valor", "").strip()
 
+        # Verifica campos obrigatórios
         if not cpf_destinatario or not valor:
             messages.error(request, "Preencha todos os campos.")
             return redirect("users:transferencia")
 
+        # Valida o valor informado
         try:
             valor = Decimal(valor)
         except:
             messages.error(request, "Valor inválido.")
             return redirect("users:transferencia")
 
+        # Busca o destinatário pelo CPF
         try:
             destinatario = Cliente.objects.get(cpf=cpf_destinatario)
         except Cliente.DoesNotExist:
@@ -247,10 +249,15 @@ def transferencia(request):
                 request,
                 f"Transferência de R$ {valor:.2f} para {destinatario.username} realizada com sucesso!"
             )
-            return redirect("users:perfil")
+            # Mantém o usuário na mesma página após a transferência
+            return redirect("users:transferencia")
+
         except ValidationError as e:
-            messages.error(request, e.message)
+            # Captura mensagens do modelo (ex: saldo insuficiente, transferência para si mesmo)
+            for msg in e.messages:
+                messages.error(request, msg)
         except Exception as e:
             messages.error(request, f"Erro ao processar transferência: {e}")
 
+    # Renderiza a página (tanto GET quanto erros no POST)
     return render(request, "users/perfil/cliente/transferencia.html", {"user": remetente})

@@ -77,10 +77,18 @@ input:focus {
     box-shadow: 0 0 5px var(--primary-color);
 }
 
-/* BOTÃO */
-button {
-    width: 100%;
+/* GRUPO DE BOTÕES */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
     margin-top: 25px;
+}
+
+/* BOTÃO ENVIAR */
+button {
+    flex: 1;
     background-color: var(--primary-color);
     color: #1B263B;
     font-weight: bold;
@@ -93,6 +101,24 @@ button {
 
 button:hover {
     background-color: #FFC000;
+    transform: translateY(-2px);
+}
+
+/* LINK VOLTAR */
+.btn-voltar {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    background-color: var(--secondary-color);
+    color: #F0F0F0;
+    padding: 12px 0;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-voltar:hover {
+    background-color: #526C8E;
     transform: translateY(-2px);
 }
 
@@ -129,7 +155,15 @@ button:hover {
         font-size: 1.5em;
     }
 
-    input, button {
+    input, button, .btn-voltar {
         font-size: 0.95em;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    button, .btn-voltar {
+        width: 100%;
     }
 }

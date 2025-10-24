@@ -25,7 +25,10 @@
         <label>Valor (R$):</label>
         <input type="number" step="0.01" min="0.01" name="valor" placeholder="Ex: 150.00" required>
 
-        <button type="submit">Enviar</button>
+        <div class="button-group">
+            <button type="submit">Enviar</button>
+            <a href="{% url 'users:perfil' %}" class="btn-voltar">⬅ Voltar</a>
+        </div>
     </form>
 </body>
 </html>
