@@ -162,3 +162,76 @@ class Transferencia(models.Model):
 
     def __str__(self):
         return f"Transferência de {self.remetente.username} para {self.destinatario.username} - R$ {self.valor}"
+
+class Cartao(models.Model):
+    TIPO_CHOICES = [
+        ('debito', 'Cartão de Débito'),
+        ('credito', 'Cartão de Crédito'),
+    ]
+
+    nome = models.CharField(max_length=50, unique=True)
+    descricao = models.TextField(blank=True)
+    tipo = models.CharField(max_length=10, choices=TIPO_CHOICES)
+    limite_minimo = models.DecimalField(max_digits=10, decimal_places=2)
+    limite_maximo = models.DecimalField(max_digits=10, decimal_places=2)
+    cor_hex = models.CharField(max_length=7, default="#FFFFFF")  # cor do cartão
+
+    def __str__(self):
+        return f"{self.nome} ({self.tipo})"
+
+from django.db import models
+from django.core.exceptions import ValidationError  # <-- IMPORT CORRETO AQUI
+
+
+class CartaoCliente(models.Model):
+    STATUS_CHOICES = [
+        ('pendente', 'Pendente'),
+        ('aprovado', 'Aprovado'),
+        ('negado', 'Negado'),
+    ]
+
+    cliente = models.ForeignKey(
+        'Cliente',
+        on_delete=models.CASCADE,
+        related_name='cartoes_solicitados'
+    )
+    gerente = models.ForeignKey(
+        'Gerente',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='cartoes_gerenciados'
+    )
+    cartao = models.ForeignKey(
+        'Cartao',
+        on_delete=models.CASCADE,
+        related_name='solicitacoes'
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='pendente'
+    )
+    data_solicitacao = models.DateTimeField(auto_now_add=True)
+    resposta_gerente = models.TextField(blank=True, null=True)
+
+    def clean(self):
+        """Validações antes de salvar."""
+        # Impede solicitar o mesmo cartão se já houver um aprovado
+        if CartaoCliente.objects.filter(
+            cliente=self.cliente,
+            cartao=self.cartao,
+            status='aprovado'
+        ).exists():
+            raise ValidationError("Você já possui este cartão aprovado.")
+
+        # Impede solicitar cartão acima do limite disponível
+        if self.cartao.limite_minimo > self.cliente.creditos:
+            raise ValidationError("Seu limite atual não permite solicitar este cartão.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  # Valida antes de salvar
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.cliente.username} - {self.cartao.nome} ({self.status})"

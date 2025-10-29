@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cartões Disponíveis - OdinBank</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'perfil/cliente/listar_cartoes/style.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=raven" />
+
+</head>
+<body>
+    <div class="main-content">
+        <header class="main-header">
+            <h1>Escolha seu Cartão</h1>
+            <p>Selecione o modelo de cartão que deseja solicitar</p>
+        </header>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <section class="credit-card-requests">
+
+            <!-- Cartão de Débito -->
+            {% if cartao_debito %}
+            <div class="card" style="background-color: #87CEEB">
+                <div class="row">
+                    <div class="txt">
+                        <span class="material-symbols-outlined">raven</span>
+                        <p>OdinBank</p>
+                    </div>
+                    <div class="balls">
+                        <div class="red"></div>
+                        <div class="orange"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h2>{{ cartao_debito.nome }}</h2>
+                    <p>{{ cartao_debito.descricao }}</p>
+                    <p><strong>Tipo:</strong> Débito</p>
+                    <form method="post" action="{% url 'users:solicitar_cartao' cartao_debito.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-solicitar">Solicitar Cartão</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Cartão de Crédito 1 -->
+            {% if cartao_credito1 %}
+            <div class="card" style="background-color: #4169E1">
+                <div class="row">
+                    <div class="txt">
+                        <span class="material-symbols-outlined">raven</span>
+                        <p>OdinBank</p>
+                    </div>
+                    <div class="balls">
+                        <div class="red"></div>
+                        <div class="orange"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h2>{{ cartao_credito1.nome }}</h2>
+                    <p>{{ cartao_credito1.descricao }}</p>
+                    <p><strong>Limite:</strong> R$ {{ cartao_credito1.limite_minimo }} - R$ {{ cartao_credito1.limite_maximo }}</p>
+                    <form method="post" action="{% url 'users:solicitar_cartao' cartao_credito1.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-solicitar">Solicitar Cartão</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Cartão de Crédito 2 -->
+            {% if cartao_credito2 %}
+            <div class="card" style="background-color:#00008B">
+                <div class="row">
+                    <div class="txt">
+                        <span class="material-symbols-outlined">raven</span>
+                        <p>OdinBank</p>
+                    </div>
+                    <div class="balls">
+                        <div class="red"></div>
+                        <div class="orange"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h2>{{ cartao_credito2.nome }}</h2>
+                    <p>{{ cartao_credito2.descricao }}</p>
+                    <p><strong>Limite:</strong> R$ {{ cartao_credito2.limite_minimo }} - R$ {{ cartao_credito2.limite_maximo }}</p>
+                    <form method="post" action="{% url 'users:solicitar_cartao' cartao_credito2.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-solicitar">Solicitar Cartão</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Cartão de Crédito 3 -->
+            {% if cartao_credito3 %}
+            <div class="card" style="background-color: #000000">
+                <div class="row">
+                    <div class="txt">
+                        <span class="material-symbols-outlined">raven</span>
+                        <p>OdinBank</p>
+                    </div>
+                    <div class="balls">
+                        <div class="red"></div>
+                        <div class="orange"></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h2>{{ cartao_credito3.nome }}</h2>
+                    <p>{{ cartao_credito3.descricao }}</p>
+                    <p><strong>Limite:</strong> R$ {{ cartao_credito3.limite_minimo }} - R$ {{ cartao_credito3.limite_maximo }}</p>
+                    <form method="post" action="{% url 'users:solicitar_cartao' cartao_credito3.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-solicitar">Solicitar Cartão</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+        </section>
+
+        <a href="{% url 'users:perfil' %}" class="btn-voltar">← Voltar ao perfil</a>
+    </div>
+</body>
+</html>

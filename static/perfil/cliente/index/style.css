@@ -146,6 +146,55 @@ h2 {
     font-size: 0.9em;
 }
 
+.credit-card-requests .card{
+    background-color: #415A77;
+    width: 380px;
+    height: 30vh;
+    margin-bottom: 20px;
+}
+
+.credit-card-requests .card .row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.credit-card-requests .card .txt{
+    display: flex;
+    color: #F0F0F0;
+    font-size: 15px;
+    font-weight: bold;
+    align-items: center;
+}
+
+.credit-card-requests .card .balls {
+    position: relative;
+    width: 33px;
+    height: 20px;
+}
+
+.credit-card-requests .card .balls .red,
+.credit-card-requests .card .balls .orange {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    mix-blend-mode: hard-light;
+}
+
+.credit-card-requests .card .balls .red {
+    background-color: rgba(255, 0, 0, 0.85);
+    left: 0;
+}
+
+.credit-card-requests .card .balls .orange {
+    background-color: rgba(255, 166, 0, 0.85);
+    right: 0;
+}
+
+
 /* ================== RESPONSIVIDADE ================== */
 @media (max-width: 900px) {
     .sidebar {

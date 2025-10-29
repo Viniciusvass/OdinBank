@@ -1,0 +1,235 @@
+/* ===============================
+   Cartões Disponíveis - OdinBank
+   Tema: Dark Azul + Dourado
+   =============================== */
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* VARIÁVEIS DE CORES */
+:root {
+    --primary-color: #FFD700; /* Dourado */
+    --secondary-color: #415A77; /* Azul escuro */
+    --card-bg: #415A77;
+    --card-hover: #1F334B;
+    --text-color: #F0F0F0;
+    --error-bg: #f8d7da;
+    --success-bg: #d4edda;
+}
+
+/* BODY */
+body {
+    background: linear-gradient(135deg, #1B263B, #415A77);
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: 30px;
+}
+
+/* HEADER */
+.main-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.main-header h1 {
+    color: #f0f0f0;
+    font-size: 2em;
+}
+
+.main-header p {
+    color: #D0D0D0;
+    font-size: 1em;
+}
+
+/* MENSAGENS */
+.messages {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.message {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.message.error {
+    background-color: var(--error-bg);
+    color: #721c24;
+}
+
+.message.success {
+    background-color: var(--success-bg);
+    color: #155724;
+}
+
+/* GRID 2x2 */
+.credit-card-requests {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    gap: 20px;
+    justify-items: center;
+}
+
+/* CARD */
+.credit-card-requests .card {
+    background-color: var(--card-bg);
+    width: 450px;
+    height: auto; /* deixa altura automática para não cortar o conteúdo */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.credit-card-requests .card-body {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* botão fica na base */
+}
+
+.credit-card-requests .card:hover {
+    transform: translateY(-5px);
+    background-color: var(--card-hover);
+}
+
+/* ROW (Topo do cartão) */
+.credit-card-requests .card .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+/* TEXTO E LOGO */
+.credit-card-requests .card .txt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.credit-card-requests .card .txt span {
+    font-size: 24px; /* tamanho do ícone raven */
+}
+
+/* BOLINHAS */
+.credit-card-requests .card .balls {
+    position: relative;
+    width: 33px;
+    height: 20px;
+}
+
+.credit-card-requests .card .balls .red,
+.credit-card-requests .card .balls .orange {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    mix-blend-mode: hard-light;
+}
+
+.credit-card-requests .card .balls .red {
+    background-color: rgba(255, 0, 0, 0.85);
+    left: 0;
+}
+
+.credit-card-requests .card .balls .orange {
+    background-color: rgba(255, 166, 0, 0.85);
+    right: 0;
+}
+
+/* CARD BODY */
+.credit-card-requests .card .card-body {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.credit-card-requests .card .card-body h2 {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.credit-card-requests .card .card-body p {
+    font-size: 0.95em;
+    margin-bottom: 8px;
+}
+
+/* BOTÃO SOLICITAR */
+.credit-card-requests .card .btn-solicitar {
+    width: 100%;
+    border: none;
+    background-color: var(--primary-color);
+    color: #1B263B;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.credit-card-requests .card .btn-solicitar:hover {
+    background-color: #FFC000;
+}
+
+.btn-solicitar {
+    width: 100%;
+    margin-top: 10px; /* garante espaço */
+    border: none;
+    background-color: var(--primary-color);
+    color: #1B263B;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-solicitar:hover {
+    background-color: #FFC000;
+}
+
+/* VOLTAR */
+.btn-voltar {
+    display: inline-block;
+    margin-top: 40px;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.btn-voltar:hover {
+    color: #FFC000;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 600px) {
+    .credit-card-requests {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .credit-card-requests .card {
+        width: 90%;
+        height: auto;
+    }
+}

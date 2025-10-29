@@ -10,6 +10,8 @@
 
     <!-- Ícones Google Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=raven" />
 </head>
 
 <body>
@@ -77,6 +79,26 @@
                 </ul>
             </section>
 
+            <!-- ===== SOLICITAÇÕES DE CARTÃO ===== -->
+            <section class="credit-card-requests">
+                <h2>Cartões de Crédito</h2>
+                
+                <div class="card">
+                    <div class="row">
+                        <div class="txt">
+                            <span class="material-symbols-outlined">raven</span>
+                            <p>OdinBank</p>
+                        </div>
+                        <div class="balls">
+                            <div class="red"></div>
+                            <div class="orange"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="{% url 'users:listar_cartoes' %}" class="btn-solicitacoes">+ Solicitar Cartão</a>
+            </section>
+            
         </main>
     </div>
 </body>
