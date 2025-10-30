@@ -397,3 +397,37 @@ def visualizar_solicitacoes_cartoes(request):
         "solicitacoes": solicitacoes,
     }
     return render(request, "users/perfil/gerente/solicitacoes_cartoes.html", context)
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from users.models import CartaoCliente, Gerente
+
+def aprovar_ou_negar_cartao(request, solicitacao_id, acao):
+    # Verifica se o gerente está logado
+    if "user_id" not in request.session or not request.session.get("admUser", False):
+        messages.error(request, "Apenas gerentes podem realizar essa ação.")
+        return redirect("users:login")
+
+    gerente_id = request.session["user_id"]
+    solicitacao = get_object_or_404(CartaoCliente, id=solicitacao_id, cliente__gerente_responsavel_id=gerente_id)
+
+    if acao not in ["aprovar", "negar"]:
+        messages.error(request, "Ação inválida.")
+        return redirect("perfil:solicitacoes_cartoes")
+
+    if solicitacao.status != "pendente":
+        messages.warning(request, f"Essa solicitação já foi {solicitacao.status}.")
+        return redirect("perfil:solicitacoes_cartoes")
+
+    # Atualiza status
+    if acao == "aprovar":
+        solicitacao.status = "aprovado"
+        solicitacao.resposta_gerente = "Solicitação aprovada pelo gerente."
+    else:
+        solicitacao.status = "negado"
+        solicitacao.resposta_gerente = "Solicitação negada pelo gerente."
+
+    solicitacao.gerente_id = gerente_id
+    solicitacao.save()
+    messages.success(request, f"Solicitação {acao}ada com sucesso!")
+    return redirect("users:solicitacoes_cartoes")

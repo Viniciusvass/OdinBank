@@ -56,12 +56,20 @@
             </p>
             <p class="data">Solicitado em: {{ s.data_solicitacao|date:"d/m/Y H:i" }}</p>
 
+            {% if s.status == "pendente" %}
+            <div class="acoes">
+                <a href="{% url 'users:aprovar_ou_negar_cartao' s.id 'aprovar' %}" class="btn-aprovar">Aprovar</a>
+                <a href="{% url 'users:aprovar_ou_negar_cartao' s.id 'negar' %}" class="btn-negar">Negar</a>
+            </div>
+            {% else %}
             {% if s.resposta_gerente %}
             <p><strong>Resposta:</strong> {{ s.resposta_gerente }}</p>
+            {% endif %}
             {% endif %}
         </div>
         {% endfor %}
     </div>
+
     {% else %}
         <p style="text-align:center; color:#666;">Nenhuma solicitação de cartão encontrada.</p>
     {% endif %}

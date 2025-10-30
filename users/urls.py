@@ -18,5 +18,9 @@ urlpatterns = [
     path("meus-cartoes/", views.meus_cartoes, name="meus_cartoes"),
 
     path("gerente/solicitacoes-cartoes/", views.visualizar_solicitacoes_cartoes, name="solicitacoes_cartoes"),
-
+    path(
+        "gerente/solicitacoes-cartoes/<int:solicitacao_id>/<str:acao>/",
+        views.aprovar_ou_negar_cartao,
+        name="aprovar_ou_negar_cartao"
+    ),
 ]
