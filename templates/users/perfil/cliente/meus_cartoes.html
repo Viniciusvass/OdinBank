@@ -19,6 +19,10 @@
                         <p>{{ item.cartao.descricao }}</p>
                         <p><strong>Tipo:</strong> {{ item.cartao.get_tipo_display }}</p>
                         <p><strong>Status:</strong> {{ item.get_status_display }}</p>
+                        <p><strong>Número:</strong> {{ item.numero_cartao }}</p>
+                        <p><strong>Validade:</strong> {{ item.validade|date:"m/Y" }}</p>
+                        <p><strong>CVV:</strong> {{ item.cvv }}</p>
+                        <p><strong>Senha:</strong> {{ item.senha }}</p>
                     </div>
                 {% endfor %}
             </div>

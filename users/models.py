@@ -23,6 +23,17 @@ telefone_validator = RegexValidator(
     message="Telefone deve estar no formato (XX)XXXXX-XXXX"
 )
 
+def gerar_numero_cartao_unico():
+    """Gera um número de cartão único com 16 dígitos."""
+    while True:
+        numero = ''.join([str(random.randint(0, 9)) for _ in range(16)])
+        if not CartaoCliente.objects.filter(numero_cartao=numero).exists():
+            return numero
+
+def gerar_senha_cartao():
+    """Gera uma senha de 4 dígitos."""
+    return ''.join([str(random.randint(0, 9)) for _ in range(4)])
+
 class Gerente(models.Model):
     nome = models.CharField(max_length=150)
     cpf = models.CharField(max_length=14, unique=True, validators=[cpf_validator])
@@ -181,6 +192,7 @@ class Cartao(models.Model):
 
 from django.db import models
 from django.core.exceptions import ValidationError  # <-- IMPORT CORRETO AQUI
+from django.contrib.auth.hashers import make_password
 
 class CartaoCliente(models.Model):
     STATUS_CHOICES = [
@@ -214,8 +226,14 @@ class CartaoCliente(models.Model):
     data_solicitacao = models.DateTimeField(auto_now_add=True)
     resposta_gerente = models.TextField(blank=True, null=True)
 
+    numero_cartao = models.CharField(max_length=16, unique=True, blank=True, null=True)
+    validade = models.DateField(blank=True, null=True)
+    cvv = models.CharField(max_length=3, blank=True, null=True)
+    senha = models.CharField(max_length=6, blank=True, null=True)  # agora em texto simples
+
     def clean(self):
         """Validações antes de salvar."""
+
         # Impede solicitar o mesmo cartão se já houver um aprovado
         if CartaoCliente.objects.filter(
             cliente=self.cliente,
@@ -238,7 +256,17 @@ class CartaoCliente(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
 
+        # Quando o cartão é aprovado e ainda não possui número
         if self.status == 'aprovado' and status_antigo != 'aprovado':
+            if not self.numero_cartao:
+                self.numero_cartao = gerar_numero_cartao_unico()
+                self.validade = timezone.now().date().replace(
+                    year=timezone.now().year + 5
+                )
+                self.cvv = f"{random.randint(100, 999)}"
+                self.senha = gerar_senha_cartao()  # agora texto simples
+                super().save(update_fields=['numero_cartao', 'validade', 'cvv', 'senha'])
+
             print(f"Cartão {self.cartao.nome} aprovado para {self.cliente.username}")
 
     def __str__(self):

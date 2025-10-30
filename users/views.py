@@ -317,8 +317,11 @@ def solicitar_cartao(request, cartao_id):
     cliente = get_object_or_404(Cliente, id=request.session["user_id"])
     cartao = get_object_or_404(Cartao, id=cartao_id)
 
-    # 🔒 Impede solicitações duplicadas
-    solicitacao_existente = CartaoCliente.objects.filter(cliente=cliente, cartao=cartao).exclude(status="negado").exists()
+    # 🔒 Impede solicitações duplicadas do mesmo cartão (pendente ou aprovado)
+    solicitacao_existente = CartaoCliente.objects.filter(
+        cliente=cliente, 
+        cartao=cartao
+    ).exclude(status="negado").exists()
     if solicitacao_existente:
         messages.warning(request, f"Você já possui uma solicitação ou um cartão {cartao.nome}.")
         return redirect("users:listar_cartoes")
@@ -341,6 +344,7 @@ def solicitar_cartao(request, cartao_id):
         "user": cliente,
         "cartoes": Cartao.objects.all(),
     })
+
 
 def meus_cartoes(request):
     # Garante que o usuário está logado e é um cliente

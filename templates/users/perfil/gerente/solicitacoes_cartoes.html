@@ -3,75 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Solicitações de Cartões - OdinBank</title>
-    <style>
-        body {
-            font-family: "Poppins", sans-serif;
-            background-color: #f5f6fa;
-            color: #333;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #273c75;
-        }
-        .solicitacoes-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .solicitacao {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-        .solicitacao h3 {
-            margin: 0;
-            color: #2f3640;
-        }
-        .status {
-            font-weight: bold;
-        }
-        .pendente { color: #e1b12c; }
-        .aprovado { color: #44bd32; }
-        .negado { color: #c23616; }
-        .data {
-            font-size: 0.9em;
-            color: #888;
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'perfil/gerente/solicitacoes_cartoes/style.css' %}">
 </head>
 <body>
-    <h1>Solicitações de Cartões dos Seus Clientes</h1>
+    <main class="main">
+        <header class="main-header">
+            <h1>Solicitações de Cartões</h1>
+            <p>Gerencie os pedidos de cartões feitos pelos seus clientes.</p>
+        </header>
 
-    {% if solicitacoes %}
-    <div class="solicitacoes-container">
-        {% for s in solicitacoes %}
-        <div class="solicitacao">
-            <h3>{{ s.cliente.username }}</h3>
-            <p><strong>Cartão:</strong> {{ s.cartao.nome }} ({{ s.cartao.get_tipo_display }})</p>
-            <p><strong>Status:</strong> 
-                <span class="status {{ s.status }}">{{ s.get_status_display }}</span>
-            </p>
-            <p class="data">Solicitado em: {{ s.data_solicitacao|date:"d/m/Y H:i" }}</p>
+        {% if solicitacoes %}
+        <section class="solicitacoes-container">
+            {% for s in solicitacoes %}
+            <div class="solicitacao-card">
+                <div class="solicitacao-header">
+                    <h3>{{ s.cliente.username }}</h3>
+                    <span class="status {{ s.status }}">{{ s.get_status_display }}</span>
+                </div>
 
-            {% if s.status == "pendente" %}
-            <div class="acoes">
-                <a href="{% url 'users:aprovar_ou_negar_cartao' s.id 'aprovar' %}" class="btn-aprovar">Aprovar</a>
-                <a href="{% url 'users:aprovar_ou_negar_cartao' s.id 'negar' %}" class="btn-negar">Negar</a>
+                <div class="solicitacao-info">
+                    <p><strong>Cartão:</strong> {{ s.cartao.nome }} ({{ s.cartao.get_tipo_display }})</p>
+                    <p class="data">Solicitado em: {{ s.data_solicitacao|date:"d/m/Y H:i" }}</p>
+                </div>
+
+                {% if s.status == "pendente" %}
+                <div class="acoes">
+                    <a href="{% url 'users:aprovar_ou_negar_cartao' s.id 'aprovar' %}" class="btn-aprovar">Aprovar</a>
+                    <a href="{% url 'users:aprovar_ou_negar_cartao' s.id 'negar' %}" class="btn-negar">Negar</a>
+                </div>
+                {% elif s.resposta_gerente %}
+                <p class="resposta"><strong>Resposta do gerente:</strong> {{ s.resposta_gerente }}</p>
+                {% endif %}
             </div>
-            {% else %}
-            {% if s.resposta_gerente %}
-            <p><strong>Resposta:</strong> {{ s.resposta_gerente }}</p>
-            {% endif %}
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
-
-    {% else %}
-        <p style="text-align:center; color:#666;">Nenhuma solicitação de cartão encontrada.</p>
-    {% endif %}
+            {% endfor %}
+        </section>
+        {% else %}
+            <p class="sem-solicitacoes">Nenhuma solicitação de cartão encontrada.</p>
+        {% endif %}
+    </main>
 </body>
 </html>

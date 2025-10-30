@@ -1,0 +1,140 @@
+body {
+    background: linear-gradient(135deg, #1B263B, #415A77);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #c6c6c6;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    padding: 40px;
+    min-height: 100vh;
+}
+
+.main-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.main-header h1 {
+    color: #F0F0F0;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.main-header p {
+    color: #D0D0D0;
+    font-size: 1rem;
+}
+
+/* Container */
+.solicitacoes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+/* Card */
+.solicitacao-card {
+    background-color: #2A3E59;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.solicitacao-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.solicitacao-header h3 {
+    color: #FFD700;
+    font-size: 1.2rem;
+}
+
+/* Status */
+.status {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.status.pendente {
+    background-color: #FFD700;
+    color: #1B263B;
+}
+
+.status.aprovado {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.status.negado {
+    background-color: #E74C3C;
+    color: #fff;
+}
+
+/* Info */
+.solicitacao-info p {
+    margin: 5px 0;
+    color: #F0F0F0;
+}
+
+.data {
+    font-size: 0.9rem;
+    color: #C0C0C0;
+}
+
+/* Botões */
+.acoes {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-aprovar, .btn-negar {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-aprovar {
+    background-color: #FFD700;
+    color: #1B263B;
+}
+
+.btn-aprovar:hover {
+    background-color: #FFC000;
+}
+
+.btn-negar {
+    background-color: #E74C3C;
+    color: #fff;
+}
+
+.btn-negar:hover {
+    background-color: #C0392B;
+}
+
+/* Resposta do gerente */
+.resposta {
+    background-color: #1F334B;
+    border-left: 4px solid #FFD700;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+}
+
+/* Caso não haja solicitações */
+.sem-solicitacoes {
+    text-align: center;
+    color: #C0C0C0;
+    font-size: 1.1rem;
+}
