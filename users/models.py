@@ -182,7 +182,6 @@ class Cartao(models.Model):
 from django.db import models
 from django.core.exceptions import ValidationError  # <-- IMPORT CORRETO AQUI
 
-
 class CartaoCliente(models.Model):
     STATUS_CHOICES = [
         ('pendente', 'Pendente'),
@@ -230,8 +229,17 @@ class CartaoCliente(models.Model):
             raise ValidationError("Seu limite atual não permite solicitar este cartão.")
 
     def save(self, *args, **kwargs):
-        self.full_clean()  # Valida antes de salvar
+        if self.pk:
+            solicitacao_antiga = CartaoCliente.objects.get(pk=self.pk)
+            status_antigo = solicitacao_antiga.status
+        else:
+            status_antigo = None
+
+        self.full_clean()
         super().save(*args, **kwargs)
+
+        if self.status == 'aprovado' and status_antigo != 'aprovado':
+            print(f"Cartão {self.cartao.nome} aprovado para {self.cliente.username}")
 
     def __str__(self):
         return f"{self.cliente.username} - {self.cartao.nome} ({self.status})"

@@ -10,7 +10,7 @@ from .models import SolicitacaoCredito
 from .forms import SolicitacaoCreditoForm
 from decimal import Decimal
 from django.core.exceptions import ValidationError
-
+from .models import Cartao, CartaoCliente
 
 # Create your views here.
 def view_cadastro(request):
@@ -259,10 +259,6 @@ def transferencia(request):
     # Renderiza a página (tanto GET quanto erros no POST)
     return render(request, "users/perfil/cliente/transferencia.html", {"user": remetente})
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from .models import Cliente, Transferencia
-
 def extrato(request):
     # Garante que o usuário está logado e é um cliente
     if "user_id" not in request.session:
@@ -293,32 +289,6 @@ def extrato(request):
     }
     return render(request, 'users/perfil/cliente/extrato.html', context)
 
-from django.shortcuts import get_object_or_404, redirect
-from django.contrib import messages
-from .models import Cartao, CartaoCliente
-
-def solicitar_cartao(request, cartao_id):
-    # Verifica se o cliente está logado
-    if "user_id" not in request.session:
-        return redirect("users:login")
-
-    admUser = request.session.get("admUser", False)
-    if admUser:
-        messages.error(request, "Apenas clientes podem solicitar cartões.")
-        return redirect("users:perfil")
-
-    cliente = get_object_or_404(Cliente, id=request.session["user_id"])
-    cartao = get_object_or_404(Cartao, id=cartao_id)
-    gerente = cliente.gerente_responsavel
-
-    try:
-        CartaoCliente.objects.create(cliente=cliente, gerente=gerente, cartao=cartao)
-        messages.success(request, f"Sua solicitação para o cartão {cartao.nome} foi enviada!")
-    except Exception as e:
-        messages.error(request, f"Erro: {e}")
-
-    return redirect("users:listar_cartoes")
-
 def listar_cartoes(request):
     if "user_id" not in request.session:
         return redirect("users:login")
@@ -340,36 +310,18 @@ def listar_cartoes(request):
 
     return render(request, "users/perfil/cliente/listar_cartoes.html", context)
 
-
-def aprovar_cartao(request, solicitacao_id):
-    if "user_id" not in request.session:
-        return redirect("users:login")
-
-    admUser = request.session.get("admUser", False)
-    if not admUser:
-        messages.error(request, "Apenas gerentes podem aprovar solicitações de cartão.")
-        return redirect("users:perfil")
-
-    solicitacao = get_object_or_404(CartaoCliente, id=solicitacao_id)
-    solicitacao.status = "aprovado"
-    solicitacao.resposta_gerente = "Cartão aprovado."
-    solicitacao.save()
-
-    messages.success(request, f"Cartão {solicitacao.cartao.nome} aprovado com sucesso!")
-    return redirect("users:solicitacoes_cartao")
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.core.exceptions import ValidationError
-from .models import Cartao, CartaoCliente, Cliente
-
-
 def solicitar_cartao(request, cartao_id):
     if "user_id" not in request.session:
         return redirect("users:login")
 
     cliente = get_object_or_404(Cliente, id=request.session["user_id"])
     cartao = get_object_or_404(Cartao, id=cartao_id)
+
+    # 🔒 Impede solicitações duplicadas
+    solicitacao_existente = CartaoCliente.objects.filter(cliente=cliente, cartao=cartao).exclude(status="negado").exists()
+    if solicitacao_existente:
+        messages.warning(request, f"Você já possui uma solicitação ou um cartão {cartao.nome}.")
+        return redirect("users:listar_cartoes")
 
     if request.method == "POST":
         try:
@@ -382,7 +334,6 @@ def solicitar_cartao(request, cartao_id):
             return redirect("users:listar_cartoes")
 
         except ValidationError as e:
-            # Captura o erro e mostra no front
             messages.error(request, e.messages[0])
             return redirect("users:listar_cartoes")
 
@@ -391,36 +342,58 @@ def solicitar_cartao(request, cartao_id):
         "cartoes": Cartao.objects.all(),
     })
 
-
-from .models import CartaoCliente
-
-def lista_solicitacoes_cartao(request):
+def meus_cartoes(request):
+    # Garante que o usuário está logado e é um cliente
     if "user_id" not in request.session:
         return redirect("users:login")
 
-    gerente = get_object_or_404(Gerente, id=request.session["user_id"])
-    solicitacoes = CartaoCliente.objects.filter(gerente=gerente).order_by("-id")
+    admUser = request.session.get("admUser", False)
+    if admUser:
+        messages.error(request, "Apenas clientes podem visualizar seus cartões.")
+        return redirect("users:perfil")
 
-    return render(request, "users/perfil/gerente/solicitacoes_cartao.html", {
+    # Busca o cliente logado
+    cliente = get_object_or_404(Cliente, id=request.session["user_id"])
+
+    # Busca os cartões conforme o status
+    cartoes_pendentes = CartaoCliente.objects.filter(cliente=cliente, status="pendente")
+    cartoes_aprovados = CartaoCliente.objects.filter(cliente=cliente, status="aprovado")
+    cartoes_negados = CartaoCliente.objects.filter(cliente=cliente, status="negado")
+
+    context = {
+        "cliente": cliente,
+        "cartoes_pendentes": cartoes_pendentes,
+        "cartoes_aprovados": cartoes_aprovados,
+        "cartoes_negados": cartoes_negados,
+    }
+
+    return render(request, "users/perfil/cliente/meus_cartoes.html", context)
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from users.models import CartaoCliente, Gerente
+
+def visualizar_solicitacoes_cartoes(request):
+    # Garante que o gerente está logado
+    if "user_id" not in request.session or not request.session.get("admUser", False):
+        messages.error(request, "Apenas gerentes podem acessar esta página.")
+        return redirect("users:login")
+
+    gerente_id = request.session["user_id"]
+
+    try:
+        gerente = Gerente.objects.get(id=gerente_id)
+    except Gerente.DoesNotExist:
+        messages.error(request, "Gerente não encontrado.")
+        return redirect("users:login")
+
+    # Pega TODAS as solicitações de cartões de clientes desse gerente
+    solicitacoes = CartaoCliente.objects.filter(
+        cliente__gerente_responsavel=gerente
+    ).select_related("cliente", "cartao").order_by("-data_solicitacao")
+
+    context = {
         "gerente": gerente,
-        "solicitacoes": solicitacoes
-    })
-
-def responder_solicitacao_cartao(request, solicitacao_id):
-    solicitacao = get_object_or_404(CartaoCliente, id=solicitacao_id)
-
-    if request.method == "POST":
-        acao = request.POST.get("acao")
-
-        if acao == "aprovar":
-            solicitacao.status = "aprovado"
-            solicitacao.resposta_gerente = "Cartão aprovado pelo gerente."
-        elif acao == "negar":
-            solicitacao.status = "negado"
-            solicitacao.resposta_gerente = "Cartão negado pelo gerente."
-        solicitacao.save()
-
-        messages.success(request, f"Solicitação {solicitacao.id} atualizada com sucesso!")
-        return redirect("users:lista_solicitacoes_cartao")
-
-    return render(request, "users/perfil/gerente/responder_solicitacao_cartao.html", {"solicitacao": solicitacao})
+        "solicitacoes": solicitacoes,
+    }
+    return render(request, "users/perfil/gerente/solicitacoes_cartoes.html", context)

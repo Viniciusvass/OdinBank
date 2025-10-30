@@ -13,11 +13,10 @@ urlpatterns = [
     path('solicitacoes/<int:solicitacao_id>/', views.responder_solicitacao, name='responder_solicitacao'),
     path('transferencia/', views.transferencia, name="transferencia"),
     path('extrato/', views.extrato, name='extrato'),
-    path('cartoes/', views.listar_cartoes, name='listar_cartoes'),
+    path('cartoes/', views.listar_cartoes, name='listar_cartoes'),    
     path('cartoes/solicitar/<int:cartao_id>/', views.solicitar_cartao, name='solicitar_cartao'),
-    path('cartoes/solicitacoes/', views.solicitar_cartao, name='solicitacoes_cartao'),
-    path('cartoes/aprovar/<int:solicitacao_id>/', views.aprovar_cartao, name='aprovar_cartao'),
-    path('solicitacoes/cartoes/', views.lista_solicitacoes_cartao, name='lista_solicitacoes_cartao'),
-    path('solicitacoes/cartoes/<int:solicitacao_id>/', views.responder_solicitacao_cartao, name='responder_solicitacao_cartao'),
+    path("meus-cartoes/", views.meus_cartoes, name="meus_cartoes"),
+
+    path("gerente/solicitacoes-cartoes/", views.visualizar_solicitacoes_cartoes, name="solicitacoes_cartoes"),
 
 ]

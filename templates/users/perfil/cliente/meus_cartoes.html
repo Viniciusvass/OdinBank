@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Meus Cartões</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'perfil/cliente/meus_cartoes/style.css' %}">
+</head>
+<body>
+    <h1>Meus Cartões</h1>
+
+    <section class="cartoes-container">
+        <h2>Aprovados</h2>
+        {% if cartoes_aprovados %}
+            <div class="cartoes-grid">
+                {% for item in cartoes_aprovados %}
+                    <div class="cartao">
+                        <h3>{{ item.cartao.nome }}</h3>
+                        <p>{{ item.cartao.descricao }}</p>
+                        <p><strong>Tipo:</strong> {{ item.cartao.get_tipo_display }}</p>
+                        <p><strong>Status:</strong> {{ item.get_status_display }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Nenhum cartão aprovado.</p>
+        {% endif %}
+    </section>
+
+    <section class="cartoes-container">
+        <h2>Pendentes</h2>
+        {% if cartoes_pendentes %}
+            <div class="cartoes-grid">
+                {% for item in cartoes_pendentes %}
+                    <div class="cartao pendente">
+                        <h3>{{ item.cartao.nome }}</h3>
+                        <p>{{ item.cartao.descricao }}</p>
+                        <p><strong>Status:</strong> {{ item.get_status_display }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Nenhum cartão pendente.</p>
+        {% endif %}
+    </section>
+
+    <section class="cartoes-container">
+        <h2>Rejeitados</h2>
+        {% if cartoes_negados %}
+            <div class="cartoes-grid">
+                {% for item in cartoes_negados %}
+                    <div class="cartao rejeitado">
+                        <h3>{{ item.cartao.nome }}</h3>
+                        <p>{{ item.cartao.descricao }}</p>
+                        <p><strong>Status:</strong> {{ item.get_status_display }}</p>
+                        {% if item.resposta_gerente %}
+                            <p><strong>Motivo:</strong> {{ item.resposta_gerente }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Nenhum cartão rejeitado.</p>
+        {% endif %}
+    </section>
+
+    <a href="{% url 'users:perfil' %}" class="voltar-btn">Voltar ao perfil</a>
+</body>
+</html>
