@@ -1,16 +1,13 @@
-from django.shortcuts import redirect, render
-from .models import Cliente, Gerente, Transferencia
+from django.shortcuts import redirect, render, get_object_or_404
+from .models import Cliente, Gerente, Transferencia, SolicitacaoCredito, Cartao, CartaoCliente
 from datetime import datetime
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.db.models import Sum
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import SolicitacaoCredito
 from .forms import SolicitacaoCreditoForm
 from decimal import Decimal
 from django.core.exceptions import ValidationError
-from .models import Cartao, CartaoCliente
 
 # Create your views here.
 def view_cadastro(request):
@@ -343,8 +340,7 @@ def solicitar_cartao(request, cartao_id):
     return render(request, "users/perfil/cliente/listar_cartoes.html", {
         "user": cliente,
         "cartoes": Cartao.objects.all(),
-    })
-
+    }) 
 
 def meus_cartoes(request):
     # Garante que o usuário está logado e é um cliente

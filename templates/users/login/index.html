@@ -13,6 +13,11 @@
             <h1>Login</h1>
         </div>
         <hr>
+        {% if error %}
+            <p class="error-message" style="color:red; font-weight:bold; text-align:center;">
+                {{ error }}
+            </p>
+        {% endif %}
         <div>
             <form class="area_form" method="POST" action="">
                 {% csrf_token %}

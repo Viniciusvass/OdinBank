@@ -5,7 +5,8 @@ from django.apps import apps
 from django.utils import timezone
 from decimal import Decimal
 from django.core.exceptions import ValidationError
-        
+from django.contrib.auth.hashers import make_password
+
 def gerar_numero_conta():
     Cliente = apps.get_model('users', 'Cliente')
     while True:
@@ -121,7 +122,7 @@ class SolicitacaoCredito(models.Model):
 
         if self.status == 'aprovado' and status_antigo != 'aprovado':
             cliente = self.cliente
-            cliente.creditos += self.valor  # 👈 soma nos créditos
+            cliente.creditos = Decimal(str(cliente.creditos)) + Decimal(str(self.valor))
             cliente.save()
 
     def __str__(self):
@@ -189,10 +190,6 @@ class Cartao(models.Model):
 
     def __str__(self):
         return f"{self.nome} ({self.tipo})"
-
-from django.db import models
-from django.core.exceptions import ValidationError  # <-- IMPORT CORRETO AQUI
-from django.contrib.auth.hashers import make_password
 
 class CartaoCliente(models.Model):
     STATUS_CHOICES = [
